@@ -1,5 +1,5 @@
 # delafuente_et_al_2024
-Code associated to the publication from De La Fuente et al (in press) for the cell cycle analysis.
+Code associated to the publication from De La Fuente et al. for the cell cycle analysis.
 It contains the following files or pipelines:
   1. CP_pipelines
   2. data_analysis
