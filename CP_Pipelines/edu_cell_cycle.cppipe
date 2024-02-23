@@ -1,0 +1,299 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:425
+GitHash:
+ModuleCount:15
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Custom
+    Select the rule criteria:or (file does contain ".npy")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:3
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<Row>r\d{2})(?P<Col>c\d{2})(?P<Site>f\d{2})(?P<Plane>p\d{2})-(?P<Channel>ch[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:Folder name
+    Regular expression to extract from file name:^(?P<Plate>.*)_(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[\d]{4}-[\d]{2}-[\d]{2})(?P<Plate>[\D][\d]{2}_[\d]{2}_[\d]{2})
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^Illum(?P<Illumination>.*).npy
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:Neurons
+    Match metadata:[{'IllumBlue': None, 'IllumGreen': None, 'IllumRed': None, 'OrigBlue': 'Well', 'OrigGreen': 'Well', 'OrigRed': 'Well'}, {'IllumBlue': None, 'IllumGreen': None, 'IllumRed': None, 'OrigBlue': 'Site', 'OrigGreen': 'Site', 'OrigRed': 'Site'}]
+    Image set matching method:Metadata
+    Set intensity range from:Image metadata
+    Assignments count:6
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "ch1")
+    Name to assign these images:OrigBlue
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "ch2")
+    Name to assign these images:OrigGreen
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "ch3")
+    Name to assign these images:OrigRed
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "IllumBlue")
+    Name to assign these images:IllumBlue
+    Name to assign these objects:Nucleus
+    Select the image type:Illumination function
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "IllumGreen")
+    Name to assign these images:IllumGreen
+    Name to assign these objects:Nucleus
+    Select the image type:Illumination function
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "IllumRed")
+    Name to assign these images:IllumRed
+    Name to assign these objects:Nucleus
+    Select the image type:Illumination function
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:2
+    Metadata category:Well
+    Metadata category:Site
+
+CorrectIlluminationApply:[module_num:5|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:['NOTE: three channels are processed here but only the EdU and DAPI are analysed. if you need to add another channel in the analysis add another identify primary or secondary modules in the pipeline depending on your needs.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:OrigBlue
+    Name the output image:CorrBlue
+    Select the illumination function:IllumBlue
+    Select how the illumination function is applied:Divide
+    Select the input image:OrigGreen
+    Name the output image:CorrGreen
+    Select the illumination function:IllumGreen
+    Select how the illumination function is applied:Divide
+    Select the input image:OrigRed
+    Name the output image:CorrRed
+    Select the illumination function:IllumRed
+    Select how the illumination function is applied:Divide
+    Set output image values less than 0 equal to 0?:Yes
+    Set output image values greater than 1 equal to 1?:Yes
+
+GrayToColor:[module_num:6|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['create overlap if needed afterwards']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select a color scheme:Composite
+    Rescale intensity:Yes
+    Select the image to be colored red:Leave this black
+    Select the image to be colored green:Leave this black
+    Select the image to be colored blue:Leave this black
+    Name the output image:ColorImage
+    Relative weight for the red image:1.0
+    Relative weight for the green image:1.0
+    Relative weight for the blue image:1.0
+    Select the image to be colored cyan:Leave this black
+    Select the image to be colored magenta:Leave this black
+    Select the image to be colored yellow:Leave this black
+    Select the image that determines brightness:Leave this black
+    Relative weight for the cyan image:1.0
+    Relative weight for the magenta image:1.0
+    Relative weight for the yellow image:1.0
+    Relative weight for the brightness image:1.0
+    Hidden:3
+    Image name:CorrBlue
+    Color:#21FFFF
+    Weight:1.0
+    Image name:CorrGreen
+    Color:#00FF00
+    Weight:1.5
+    Image name:CorrRed
+    Color:#FB0207
+    Weight:1.0
+
+IdentifyPrimaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:['identify nuclei through blue channel']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrBlue
+    Name the primary objects to be identified:Nuclei
+    Typical diameter of objects, in pixel units (Min,Max):10,22
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.05,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Three classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+ExpandOrShrinkObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:['dilate objects to properly identify borders later on']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Nuclei
+    Name the output objects:DilateNuclei
+    Select the operation:Expand objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:2
+    Fill holes in objects so that all objects shrink to a single point?:No
+    Expand or shrink measurement:None
+
+MedianFilter:[module_num:9|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['apply a median filter to the EdU image so that the signal is homogenious around the nucleus. helps with dotty staining']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrRed
+    Name the output image:FilteredImageRed
+    Window:5
+
+MaskImage:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['mask EdU image so that only the identified Nuclei will be counted (improves accuracy)']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:FilteredImageRed
+    Name the output image:MaskNuclei
+    Use objects or an image as a mask?:Objects
+    Select object for mask:DilateNuclei
+    Select image for mask:None
+    Invert the mask?:No
+
+IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:['identify EdU+ cells from the image processed with the median filter']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MaskNuclei
+    Name the primary objects to be identified:EdU
+    Typical diameter of objects, in pixel units (Min,Max):8,25
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:2.5
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.01,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+ExpandOrShrinkObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:['shrink EdU to avoid overlapping between cells']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:EdU
+    Name the output objects:ShrinkEdU
+    Select the operation:Shrink objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:2
+    Fill holes in objects so that all objects shrink to a single point?:No
+    Expand or shrink measurement:None
+
+RelateObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:['relate EdU and nuclei, this should preserve a 1:1 relationship. in this way, the number given by the pipeline will be the nuclei labelled by EdU rather than total identified EdU']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:ShrinkEdU
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:EdU_Cells
+    Parent name:None
+
+OverlayOutlines:[module_num:14|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['OPTIONAL: can use to doublecheck that the segmentation has been done properly.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:ColorImage
+    Name the output image:OverlayEdU
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:#FB02FF
+    Select objects to display:EdU_Cells
+    Select outline color:#0000FF
+    Select objects to display:DilateNuclei
+
+ExportToSpreadsheet:[module_num:15|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:['export dataset for data analysis']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Tab
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:No
+    Select the measurements to export:No
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Output Folder|/Users/Dani/Desktop
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:Neurites|AreaShape_Zernike_8_4,Neurites|AreaShape_Zernike_8_8,Neurites|AreaShape_Zernike_8_6,Neurites|AreaShape_Zernike_8_2,Neurites|AreaShape_Zernike_8_0,Neurites|AreaShape_Zernike_0_0,Neurites|AreaShape_Zernike_9_1,Neurites|AreaShape_Zernike_9_3,Neurites|AreaShape_Zernike_9_5,Neurites|AreaShape_Zernike_9_7,Neurites|AreaShape_Zernike_9_9,Neurites|AreaShape_Zernike_4_0,Neurites|AreaShape_Zernike_4_2,Neurites|AreaShape_Zernike_4_4,Neurites|AreaShape_Zernike_3_1,Neurites|AreaShape_Zernike_3_3,Neurites|AreaShape_Zernike_2_2,Neurites|AreaShape_Zernike_2_0,Neurites|AreaShape_Zernike_6_2,Neurites|AreaShape_Zernike_6_0,Neurites|AreaShape_Zernike_6_6,Neurites|AreaShape_Zernike_6_4,Neurites|AreaShape_Zernike_5_3,Neurites|AreaShape_Zernike_5_1,Neurites|AreaShape_Zernike_5_5,Neurites|AreaShape_Zernike_1_1,Neurites|AreaShape_Zernike_7_1,Neurites|AreaShape_Zernike_7_5,Neurites|AreaShape_Zernike_7_7,Neurites|AreaShape_Zernike_7_3,Neurites|AreaShape_CentralMoment_0_0,Neurites|AreaShape_CentralMoment_0_2,Neurites|AreaShape_CentralMoment_0_3,Neurites|AreaShape_CentralMoment_0_1,Neurites|AreaShape_CentralMoment_2_3,Neurites|AreaShape_CentralMoment_2_2,Neurites|AreaShape_CentralMoment_2_1,Neurites|AreaShape_CentralMoment_2_0,Neurites|AreaShape_CentralMoment_1_1,Neurites|AreaShape_CentralMoment_1_3,Neurites|AreaShape_CentralMoment_1_0,Neurites|AreaShape_CentralMoment_1_2,Neurites|AreaShape_Area,Neurites|AreaShape_HuMoment_6,Neurites|AreaShape_HuMoment_4,Neurites|AreaShape_HuMoment_5,Neurites|AreaShape_HuMoment_3,Neurites|AreaShape_HuMoment_2,Neurites|AreaShape_HuMoment_1,Neurites|AreaShape_HuMoment_0,Neurites|AreaShape_NormalizedMoment_2_1,Neurites|AreaShape_NormalizedMoment_2_0,Neurites|AreaShape_NormalizedMoment_2_3,Neurites|AreaShape_NormalizedMoment_2_2,Neurites|AreaShape_NormalizedMoment_1_3,Neurites|AreaShape_NormalizedMoment_1_1,Neurites|AreaShape_NormalizedMoment_1_0,Neurites|AreaShape_NormalizedMoment_1_2,Neurites|AreaShape_NormalizedMoment_3_1,Neurites|AreaShape_NormalizedMoment_3_0,Neurites|AreaShape_NormalizedMoment_3_2,Neurites|AreaShape_NormalizedMoment_3_3,Neurites|AreaShape_NormalizedMoment_0_1,Neurites|AreaShape_NormalizedMoment_0_3,Neurites|AreaShape_NormalizedMoment_0_0,Neurites|AreaShape_NormalizedMoment_0_2,Neurites|AreaShape_SpatialMoment_2_3,Neurites|AreaShape_SpatialMoment_2_0,Neurites|AreaShape_SpatialMoment_2_2,Neurites|AreaShape_SpatialMoment_2_1,Neurites|AreaShape_SpatialMoment_1_0,Neurites|AreaShape_SpatialMoment_1_2,Neurites|AreaShape_SpatialMoment_1_1,Neurites|AreaShape_SpatialMoment_1_3,Neurites|AreaShape_SpatialMoment_0_1,Neurites|AreaShape_SpatialMoment_0_0,Neurites|AreaShape_SpatialMoment_0_3,Neurites|AreaShape_SpatialMoment_0_2,Neurites|AreaShape_BoundingBoxArea,Neurites|AreaShape_Center_Y,Neurites|AreaShape_Center_X,Neurites|AreaShape_InertiaTensor_0_1,Neurites|AreaShape_InertiaTensor_0_0,Neurites|AreaShape_InertiaTensor_1_0,Neurites|AreaShape_InertiaTensor_1_1,Neurites|AreaShape_Extent,Neurites|AreaShape_Compactness,Neurites|AreaShape_MedianRadius,Neurites|AreaShape_FormFactor,Neurites|AreaShape_EulerNumber,Neurites|AreaShape_MinorAxisLength,Neurites|AreaShape_BoundingBoxMinimum_X,Neurites|AreaShape_BoundingBoxMinimum_Y,Neurites|AreaShape_Solidity,Neurites|AreaShape_MinFeretDiameter,Neurites|AreaShape_InertiaTensorEigenvalues_1,Neurites|AreaShape_InertiaTensorEigenvalues_0,Neurites|AreaShape_EquivalentDiameter,Neurites|AreaShape_MeanRadius,Neurites|AreaShape_Perimeter,Neurites|AreaShape_MajorAxisLength,Neurites|AreaShape_Eccentricity,Neurites|AreaShape_MaxFeretDiameter,Neurites|AreaShape_BoundingBoxMaximum_X,Neurites|AreaShape_BoundingBoxMaximum_Y,Neurites|AreaShape_MaximumRadius,Neurites|AreaShape_Orientation,Neurites|Parent_Soma,Neurites|Children_Cell_Count,Neurites|Number_Object_Number,Soma|AreaShape_SpatialMoment_2_2,Soma|AreaShape_SpatialMoment_2_0,Soma|AreaShape_SpatialMoment_2_3,Soma|AreaShape_SpatialMoment_2_1,Soma|AreaShape_SpatialMoment_1_2,Soma|AreaShape_SpatialMoment_1_1,Soma|AreaShape_SpatialMoment_1_3,Soma|AreaShape_SpatialMoment_1_0,Soma|AreaShape_SpatialMoment_0_0,Soma|AreaShape_SpatialMoment_0_1,Soma|AreaShape_SpatialMoment_0_2,Soma|AreaShape_SpatialMoment_0_3,Soma|AreaShape_NormalizedMoment_0_0,Soma|AreaShape_NormalizedMoment_0_2,Soma|AreaShape_NormalizedMoment_0_3,Soma|AreaShape_NormalizedMoment_0_1,Soma|AreaShape_NormalizedMoment_1_0,Soma|AreaShape_NormalizedMoment_1_2,Soma|AreaShape_NormalizedMoment_1_3,Soma|AreaShape_NormalizedMoment_1_1,Soma|AreaShape_NormalizedMoment_2_3,Soma|AreaShape_NormalizedMoment_2_2,Soma|AreaShape_NormalizedMoment_2_0,Soma|AreaShape_NormalizedMoment_2_1,Soma|AreaShape_NormalizedMoment_3_2,Soma|AreaShape_NormalizedMoment_3_0,Soma|AreaShape_NormalizedMoment_3_1,Soma|AreaShape_NormalizedMoment_3_3,Soma|AreaShape_CentralMoment_2_0,Soma|AreaShape_CentralMoment_2_3,Soma|AreaShape_CentralMoment_2_2,Soma|AreaShape_CentralMoment_2_1,Soma|AreaShape_CentralMoment_1_0,Soma|AreaShape_CentralMoment_1_3,Soma|AreaShape_CentralMoment_1_1,Soma|AreaShape_CentralMoment_1_2,Soma|AreaShape_CentralMoment_0_1,Soma|AreaShape_CentralMoment_0_2,Soma|AreaShape_CentralMoment_0_3,Soma|AreaShape_CentralMoment_0_0,Soma|AreaShape_Perimeter,Soma|AreaShape_Area,Soma|AreaShape_Zernike_7_3,Soma|AreaShape_Zernike_7_5,Soma|AreaShape_Zernike_7_1,Soma|AreaShape_Zernike_7_7,Soma|AreaShape_Zernike_8_6,Soma|AreaShape_Zernike_8_0,Soma|AreaShape_Zernike_8_2,Soma|AreaShape_Zernike_8_8,Soma|AreaShape_Zernike_8_4,Soma|AreaShape_Zernike_5_1,Soma|AreaShape_Zernike_5_3,Soma|AreaShape_Zernike_5_5,Soma|AreaShape_Zernike_2_2,Soma|AreaShape_Zernike_2_0,Soma|AreaShape_Zernike_9_5,Soma|AreaShape_Zernike_9_7,Soma|AreaShape_Zernike_9_9,Soma|AreaShape_Zernike_9_1,Soma|AreaShape_Zernike_9_3,Soma|AreaShape_Zernike_6_0,Soma|AreaShape_Zernike_6_2,Soma|AreaShape_Zernike_6_4,Soma|AreaShape_Zernike_6_6,Soma|AreaShape_Zernike_4_2,Soma|AreaShape_Zernike_4_4,Soma|AreaShape_Zernike_4_0,Soma|AreaShape_Zernike_0_0,Soma|AreaShape_Zernike_1_1,Soma|AreaShape_Zernike_3_1,Soma|AreaShape_Zernike_3_3,Soma|AreaShape_InertiaTensor_1_0,Soma|AreaShape_InertiaTensor_1_1,Soma|AreaShape_InertiaTensor_0_0,Soma|AreaShape_InertiaTensor_0_1,Soma|AreaShape_HuMoment_3,Soma|AreaShape_HuMoment_1,Soma|AreaShape_HuMoment_0,Soma|AreaShape_HuMoment_5,Soma|AreaShape_HuMoment_4,Soma|AreaShape_HuMoment_2,Soma|AreaShape_HuMoment_6,Soma|AreaShape_BoundingBoxMinimum_X,Soma|AreaShape_BoundingBoxMinimum_Y,Soma|AreaShape_Center_X,Soma|AreaShape_Center_Y,Soma|AreaShape_MinorAxisLength,Soma|AreaShape_MedianRadius,Soma|AreaShape_Eccentricity,Soma|AreaShape_BoundingBoxMaximum_Y,Soma|AreaShape_BoundingBoxMaximum_X,Soma|AreaShape_EquivalentDiameter,Soma|AreaShape_InertiaTensorEigenvalues_1,Soma|AreaShape_InertiaTensorEigenvalues_0,Soma|AreaShape_BoundingBoxArea,Soma|AreaShape_Orientation,Soma|AreaShape_MinFeretDiameter,Soma|AreaShape_MeanRadius,Soma|AreaShape_EulerNumber,Soma|AreaShape_MajorAxisLength,Soma|AreaShape_Extent,Soma|AreaShape_Compactness,Soma|AreaShape_MaximumRadius,Soma|AreaShape_Solidity,Soma|AreaShape_FormFactor,Soma|AreaShape_MaxFeretDiameter,Soma|ObjectSkeleton_NumberNonTrunkBranches_SkelNeurites,Soma|ObjectSkeleton_NumberTrunks_SkelNeurites,Soma|ObjectSkeleton_TotalObjectSkeletonLength_SkelNeurites,Soma|ObjectSkeleton_NumberBranchEnds_SkelNeurites,Image|Metadata_Plate,Image|Metadata_WellRow,Image|Metadata_Date,Image|Metadata_FileLocation,Image|Metadata_ChannelNumber,Image|Metadata_Frame,Image|Metadata_Site,Image|Metadata_WellColumn,Image|Metadata_Well,Image|Metadata_Series,Image|Count_Cell,Image|Count_Soma,Image|Count_Neurites,Cell|Granularity_10_Neurons,Cell|Granularity_15_Neurons,Cell|Granularity_4_Neurons,Cell|Granularity_8_Neurons,Cell|Granularity_6_Neurons,Cell|Granularity_13_Neurons,Cell|Granularity_9_Neurons,Cell|Granularity_11_Neurons,Cell|Granularity_12_Neurons,Cell|Granularity_7_Neurons,Cell|Granularity_2_Neurons,Cell|Granularity_16_Neurons,Cell|Granularity_1_Neurons,Cell|Granularity_5_Neurons,Cell|Granularity_3_Neurons,Cell|Granularity_14_Neurons,Cell|Number_Object_Number,Cell|Parent_Soma,Cell|Parent_Neurites,Cell|Location_Center_Y,Cell|Location_Center_X,Experiment|Metadata_GroupingTags
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:cell_cycle_edu
+    Overwrite existing files without warning?:Yes
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
